@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+
+    <style>
+        button {
+            border-radius: 1px;
+            margin: 1px;
+            font-size: larger;
+        }
+
+        .entrada {
+            border-width: 3px;
+            border-style: solid;
+            margin: 1px;
+        }
+
+        .nome {
+            display: grid;
+            grid-template-columns: 120px 250px 250px;
+            font-size: larger;
+            font-family: 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Sistema de cadastro</h1>
+    <div class="nome">NOME: <input type="text" id="inpNome" class="entrada"> <br></div>
+    <div class="nome">CURSO: <input type="text" id="inpCurso" class="entrada"><br></div>
+    <div class="nome">MATRÍCULA: <input type="text" id="inpMatricula" class="entrada"><br></div>
+    <div class="nome">NOTA: <input type="text" id="inpNota" class="entrada"><br></div><br>
+    <button onclick="cadastrar()">Cadastrar</button>
+    <button onclick="buscar()">Localizar</button>
+    <button onclick="editar()">Editar</button>
+    <button onclick="verificar()">Apagar</button>
+    <button onclick="lista()">Mostrar todos</button>
+    <div id="saida"><br></div>
+
+    <script>
+        var nome = new Array()
+        var curso = new Array()
+        var matricula = new Array()
+        var nota = new Array()
+        var nomeTest
+        var cursoTest
+        var matriculaTest
+        var notaTest
+
+        function cadastrar() {
+            nomeTest = (document.getElementById("inpNome").value)
+            cursoTest = (document.getElementById("inpCurso").value)
+            matriculaTest = (document.getElementById("inpMatricula").value)
+            notaTest = (document.getElementById("inpNota").value)
+            if (cursoTest == '' || notaTest == '' || matriculaTest == "" || nomeTest == "") {
+                alert("PREENCHA TODOS OS DADOS!!")
+            } else { cadastrarUsuario() }
+
+        }
+
+
+        function cadastrarUsuario() {
+            nome.push(nomeTest)
+            curso.push(cursoTest)
+            matricula.push(matriculaTest)
+            nota.push(notaTest)
+
+            document.getElementById("inpNome").value = ""
+            document.getElementById("inpCurso").value = ""
+            document.getElementById("inpMatricula").value = ""
+            document.getElementById("inpNota").value = ""
+            document.getElementById("inpNome").focus()
+        }
+
+
+        function buscar() {
+            let nomeBusca = document.getElementById("inpNome").value
+            let indiceE = nome.indexOf(nomeBusca)
+            if (indiceE != -1) {
+                document.getElementById("inpCurso").value = curso[indiceE]
+                document.getElementById("inpMatricula").value = matricula[indiceE]
+                document.getElementById("inpNota").value = nota[indiceE]
+            } else {
+                if (document.getElementById("inpNome").value == "") {
+                    alert("Digite um nome")
+                } else {
+                    if (indiceE < 0) {
+                        alert("Nome Inválido")
+                    }
+                }
+            }
+
+        }
+        function nomeFunction() { mudar = Number(prompt("DIGITE O QUE DESEJA MUDAR\n1 PARA NOME\n2 PARA CURSO\n3 PARA MATRÍCULA\n4 PARA NOTA!")) }
+        function editar() {
+            nomeBusca = prompt("DIGITE O NOME DE BUSCA")
+            indice = nome.indexOf(nomeBusca)
+            if (indice < 0) {
+                alert("NOME INVÁLIDO!!")
+            } else { nomeFunction() }
+            if (mudar < 1 || mudar > 4) {
+                alert("CÓDIGO INVÁLIDO!")
+                nomeFunction()
+            } else {
+                if (mudar == 1) {
+                    novoNome = prompt("DIGITE O NOVO NOME")
+                    nome[indice] = novoNome
+                    alert("NOME ALTERADO COM SUCESSO!!!!")
+
+                } else {
+                    if (mudar == 2) {
+                        novoCurso = prompt("DIGITE O NOVO CURSO")
+                        curso[indice] = novoCurso
+                        alert("CURSO ALTERADO COM SUCESSO!!!!")
+                    } else {
+                        if (mudar == 3) {
+                            novoMatricula = prompt("DIGITE A NOVA MATRÍCULA")
+                            matricula[indice] = novoMatricula
+                            alert("MATRICULA ALTERADA COM SUCESSO!!!!")
+                        } else {
+                            if (mudar == 4) {
+                                novoNota = prompt("DIGITE A NOVA NOTA")
+                                nota[indice] = novoNota
+                                alert("NOTA ALTERADA COM SUCESSO!!!!")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function apagar() {
+            nomeBusca = document.getElementById("inpNome").value
+            indice = nome.indexOf(nomeBusca)
+            alert(nomeBusca + " APAGADO COM SUCESSO")
+            nome.splice(indice, 1)
+            curso.splice(indice, 1)
+            matricula.splice(indice, 1)
+            nota.splice(indice, 1)
+            document.getElementById("inpNome").value = ""
+            document.getElementById("inpCurso").value = ""
+            document.getElementById("inpMatricula").value = ""
+            document.getElementById("inpNota").value = ""
+            document.getElementById("inpNome").focus()
+
+        }
+        function lista() {
+            document.getElementById("saida").innerHTML = ""
+            if (nome.length == 0) {
+                alert("SEM USUARIOS CADASTRADOS")
+            }
+            indice = nome.length
+            for (i = 0; i < indice; i++) {
+
+                document.getElementById("saida").innerHTML += nome[i] + "<br>"
+                document.getElementById("saida").innerHTML += curso[i] + "<br>"
+                document.getElementById("saida").innerHTML += matricula[i] + "<br>"
+                document.getElementById("saida").innerHTML += nota[i] + "<br><br>"
+
+            }
+
+        }
+        function verificar() {
+            let nomeBusca = document.getElementById("inpNome").value
+            let indiceE = nome.indexOf(nomeBusca)
+            if (nomeBusca == "") {
+                alert("Digite um nome")
+            } else {
+                if (indiceE < 0) {
+                    alert("Nome Inválido")
+                } else {
+                    apagar()
+                }
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
